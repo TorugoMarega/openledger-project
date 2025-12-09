@@ -13,7 +13,6 @@
     <description>Sistema de Core Banking responsável por gerenciar contas, clientes e processar transações financeiras
         com alta integridade. Este é o módulo pai que orquestra toda a aplicação
     </description>
-
     <developers>
         <developer>
             <name>Victor Hugo Marega</name>
@@ -31,6 +30,12 @@
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <junit.version>4.13.2</junit.version>
     </properties>
+
+    <modules>
+        <module>
+            ledger-utils
+        </module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
