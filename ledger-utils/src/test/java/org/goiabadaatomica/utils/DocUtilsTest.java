@@ -18,9 +18,13 @@ public class DocUtilsTest {
 
     private final String cnpjValidoSemMascara = "23835678000190";
 
+    private final String cnpjInvalidoQrdeCaracteresInferior = "238356780001";
+
     private final String cnpjValidoComMascara = "23.835.678/0001-90";
 
     private final String cnpjInvalido = "11112165489aa5";
+
+    private final String cnpjInvalidoRepetido = "11111111111111";
 
     @Test
     public void isNotCpfValido(){
@@ -33,5 +37,18 @@ public class DocUtilsTest {
     public void isCpfValidoSucess(){
         assertTrue(DocUtils.isCpfValido(cpfValidoComMascara));
         assertTrue(DocUtils.isCpfValido(cpfValidoSemMascara));
+    }
+
+    @Test
+    public void isCnpjValidoSucess(){
+        assertTrue(DocUtils.isCnpjValido(cnpjValidoComMascara));
+        assertTrue(DocUtils.isCnpjValido(cnpjValidoSemMascara));
+    }
+
+    @Test
+    public void isNotCnpjValidoSucess(){
+        assertFalse(DocUtils.isCnpjValido(cnpjInvalido));
+        assertFalse(DocUtils.isCnpjValido(cnpjInvalidoRepetido));
+        assertFalse(DocUtils.isCnpjValido(cnpjInvalidoQrdeCaracteresInferior));
     }
 }

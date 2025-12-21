@@ -9,10 +9,10 @@ public final class DocUtils {
 
     private static final int CPF_SIZE = 11;
     private static final int CNPJ_SIZE = 14;
+    
+    private static final int[] PESOS_CNPJ_1 = {5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
 
-    private DocUtils() {
-        throw new UnsupportedOperationException("Esta é uma classe utilitária e não pode ser instanciada");
-    }
+    private static final int[] PESOS_CNPJ_2 = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
 
     public static boolean isCpfValido(String cpf) {
         String cpfLimpo = sanitizar(cpf);
@@ -26,7 +26,32 @@ public final class DocUtils {
 
     public static boolean isCnpjValido(String cnpj) {
         String cnpjLimpo = sanitizar(cnpj);
-        return cnpjLimpo != null && !isSequenciaRepetida(cnpjLimpo) && isTamanhoValido(cnpjLimpo, CNPJ_SIZE);
+
+        if (cnpjLimpo == null || isSequenciaRepetida(cnpjLimpo) || !isTamanhoValido(cnpjLimpo, CNPJ_SIZE)) {
+            return false;
+        }
+
+        if (!validarDigitoCnpj(cnpjLimpo, PESOS_CNPJ_1, 12)) {
+            return false;
+        }
+
+        return validarDigitoCnpj(cnpjLimpo, PESOS_CNPJ_2, 13);
+    }
+
+    private static boolean validarDigitoCnpj(String cnpjLimpo, int[] pesos, int posicaoDoDigito) {
+        int soma = 0;
+        
+        for (int i = 0; i < pesos.length; i++) {
+            int digito = cnpjLimpo.charAt(i) - '0'; //conversao de ASCII para Inteiro
+            soma += digito * pesos[i];
+        }
+
+        int resto = soma % 11;
+        int digitoCalculado = (resto < 2) ? 0 : 11 - resto;
+
+        int digitoReal = cnpjLimpo.charAt(posicaoDoDigito) - '0'; //conversao de ASCII para Inteiro
+
+        return digitoCalculado == digitoReal;
     }
 
     private static String sanitizar(String valor) {
